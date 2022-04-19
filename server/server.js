@@ -18,7 +18,7 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 app.use(cookieParser());
-app.use(cors({ origin: 'http://localhost:4000', credentials: true }));
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -55,7 +55,6 @@ app.post('/api/users/login', async (req, res) => {
     const refreshToken = createRefreshToken(user.id);
 
     user.refreshToken = refreshToken;
-    console.log(fakeDB);
     sendRefreshToken(res, refreshToken);
     sendAccessToken(res, req, accessToken);
   } catch (error) {
