@@ -7,10 +7,7 @@ const Content = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user.accessToken) {
-      console.log(user);
-      return navigate('/login');
-    }
+    if (!user.accessToken) return navigate('/login');
   }, [navigate, user.accessToken]);
 
   return <div>Content</div>;
