@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Content, Login, Navigation, Protected, Register } from './components';
 
 export const UserContext = React.createContext([]);
@@ -8,12 +8,15 @@ const App = () => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
+
   const logoutCallback = async () => {
     await fetch('http://localhost:4000/api/users/logout', {
       method: 'POST',
       credentials: 'include',
     });
     setUser({});
+    navigate('/');
   };
 
   useEffect(() => {
@@ -26,7 +29,6 @@ const App = () => {
         })
       ).json();
 
-      console.log(result);
       setUser({ accessToken: result.accessToken });
       setLoading(false);
     };
@@ -38,7 +40,7 @@ const App = () => {
 
   return (
     <UserContext.Provider value={[user, setUser]}>
-      <BrowserRouter>
+      <div className="app">
         <Navigation logoutCallback={logoutCallback} />
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -46,7 +48,7 @@ const App = () => {
           <Route path="/protected" element={<Protected />} />
           <Route path="/" element={<Content />} />
         </Routes>
-      </BrowserRouter>
+      </div>
     </UserContext.Provider>
   );
 };
